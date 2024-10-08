@@ -112,13 +112,3 @@ class CryptoAnalyzer:
         C = FFTIFT.dot(Yin)
         approximated_sample = F.dot(C)
         return approximated_sample, C
-
-    def detected_anomalies_LSM(self, sample=None):
-        if sample is None:
-            sample = self.sample
-        sample_len = len(sample)
-        wind_size = int(10 * sample_len / 100)
-        for i in range(0, sample_len):
-            for j in range(i, i + wind_size):
-                print(i)
-                pass
