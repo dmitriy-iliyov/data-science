@@ -9,6 +9,7 @@ class CryptoAnalyzer:
     def __init__(self, sample, currency):
         self.sample = sample
         self.currency = currency
+        print('Sample stat characteristics:')
         self.E, self.V, self.sd = self.stat_characteristics()
 
         ploter.one_plot(sample, currency)
@@ -28,22 +29,24 @@ class CryptoAnalyzer:
         if noise:
             ploter.two_plots(self._add_noise(n), 'synthetic-n-sample',
                              self._LSM(self._synthetic_noise_sample)[0], 'synthetic-trend')
+            print('Synthetic noise sample stat characteristics:')
+            self.stat_characteristics(self._synthetic_noise_sample)
             if anomalies:
                 Q_AV = 3
                 nAVv = 10
                 nAV = int((n * nAVv) / 100)
                 ploter.two_plots(self._add_anomalies(nAV, Q_AV, n), 'synthetic-sample-anomalies',
                                  self._LSM(self._synthetic_sample)[0], 'synthetic-trend')
+                print('Synthetic noise + anomalies sample stat characteristics:')
                 self.stat_characteristics(self._synthetic_sample)
                 return self._synthetic_sample
-            self.stat_characteristics(self._synthetic_noise_sample)
             return self._synthetic_noise_sample
         else:
             return self._synthetic_a_sample
 
     def _add_noise(self, n):
         self._synthetic_noise_sample = np.zeros(n)
-        noise = d.normal_distribution(self.E, self.sd * 0.3, n)
+        noise = d.normal_distribution(self.E, self.sd, n)
         self._synthetic_noise_sample = self._synthetic_a_sample + noise
         return self._synthetic_noise_sample
 
@@ -75,6 +78,8 @@ class CryptoAnalyzer:
         for i in range(sample_len):
             leftovers[i] = self.sample[i] - self._a_sample[i, 0]
         ploter.two_plots(self.sample, 'sample', self._a_sample, 'trend')
+        print('Approximation sample stat characteristics:')
+        self.stat_characteristics(self._a_sample)
         if leftovers_flag:
             return self._a_sample, leftovers
         return self._a_sample
@@ -86,7 +91,8 @@ class CryptoAnalyzer:
         for i in range(1, len(self._e_sample)):
             self._e_sample[i, 0] = (self._c[0, 0] + self._c[1, 0] * i + (self._c[2, 0] * i * i)
                                     + (self._c[3, 0] * i ** 3) + (self._c[4, 0] * i ** 4))
-            # extrapolation_sample[i, 0] = c[0, 0] + c[1, 0] * i + (c[2, 0] * i * i) + (c[3, 0] * i ** 3)
+        print('Extrapolation sample stat characteristics:')
+        self.stat_characteristics(self._e_sample)
         ploter.one_plot(self._e_sample, 'extrapolation-data')
         return self._e_sample
 
