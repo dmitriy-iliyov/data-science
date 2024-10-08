@@ -9,6 +9,7 @@ currency = 'bitcoin'
 df = pd.read_csv('files/' + currency + '.csv')
 sample = df['price']
 analyzer = sl.CryptoAnalyzer(sample, currency)
-analyzer.lsm_approximation()
+# analyzer.lsm_approximation()
 # analyzer.lsm_extrapolation(365)
-analyzer.model(10000, True, True)
+# analyzer.model(365, True, True)
+analyzer.detected_anomalies_LSM()

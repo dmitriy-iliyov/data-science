@@ -22,7 +22,7 @@ class CryptoAnalyzer:
         self._synthetic_noise_sample = None
         self._synthetic_sample = None
 
-    def model(self, n, noise=False, anomalies=False):
+    def model(self, n, noise=False, anomalies=False, anomalies_present=10):
         self._synthetic_a_sample = np.zeros(n)
         for j in range(n):
             self._synthetic_a_sample[j] = sum(c * (j ** i) for i, c in enumerate(self._c))
@@ -32,10 +32,9 @@ class CryptoAnalyzer:
             print('Synthetic noise sample stat characteristics:')
             self.stat_characteristics(self._synthetic_noise_sample)
             if anomalies:
-                Q_AV = 3
-                nAVv = 10
-                nAV = int((n * nAVv) / 100)
-                ploter.two_plots(self._add_anomalies(nAV, Q_AV, n), 'synthetic-sample-anomalies',
+                sdk = 3
+                anomalies_count = int((n * anomalies_present) / 100)
+                ploter.two_plots(self._add_anomalies(anomalies_count, sdk, n), 'synthetic-sample-anomalies',
                                  self._LSM(self._synthetic_sample)[0], 'synthetic-trend')
                 print('Synthetic noise + anomalies sample stat characteristics:')
                 self.stat_characteristics(self._synthetic_sample)
@@ -50,13 +49,13 @@ class CryptoAnalyzer:
         self._synthetic_noise_sample = self._synthetic_a_sample + noise
         return self._synthetic_noise_sample
 
-    def _add_anomalies(self, nAV, Q_AV, n):
+    def _add_anomalies(self, anomalies_count, sdk, n):
         self._synthetic_sample = self._synthetic_noise_sample.copy()
-        SSAV = np.random.normal(self.E, (Q_AV * self.sd), nAV)
-        uniform = d.uniform_distribution(min(self.sample), max(self.sample), n, nAV)
-        for i in range(nAV):
+        SSAV = np.random.normal(self.E, (sdk * self.sd), anomalies_count)
+        uniform = d.uniform_distribution(min(self.sample), max(self.sample), n, anomalies_count)
+        for i in range(anomalies_count):
             k = int(uniform[i])
-            self._synthetic_sample[k] = self._synthetic_a_sample[k] + SSAV[i]
+            self._synthetic_sample[k] = self._synthetic_sample[k] + SSAV[i]
         return self._synthetic_sample
 
     def stat_characteristics(self, sample=None):
