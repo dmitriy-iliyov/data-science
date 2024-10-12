@@ -47,8 +47,8 @@ def three_plots(data_set, labels):
         df_3_ids = [i for i in range(len(data_3))]
         plt.figure(figsize=(10, 5))
         plt.plot(df_1_ids, data_1, label=labels[0], color='orange')
-        plt.plot(df_2_ids, data_2, label=labels[1], color='blue')
-        plt.plot(df_3_ids, data_3, label=labels[2], color='green')
+        plt.plot(df_2_ids, data_2, label=labels[1], color='red')
+        plt.plot(df_3_ids, data_3, label=labels[2], color='blue')
         plt.ylabel('USD')
         plt.xticks(rotation=45)
         plt.legend()
@@ -67,3 +67,7 @@ def hist(data):
         plt.show()
     else:
         print('No data found')
+
+
+def clean():
+    plt.close('all')

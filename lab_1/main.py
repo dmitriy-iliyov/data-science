@@ -1,15 +1,29 @@
 import pandas as pd
 
-import parser
-import statistic_learning as sl
+from src import crypto_analyzer as ca
 
 
 currency = 'bitcoin'
 # df = parser.coin_parsing(currency, 365)
 df = pd.read_csv('files/' + currency + '.csv')
 sample = df['price']
-analyzer = sl.CryptoAnalyzer(sample, currency)
-# analyzer.lsm_approximation()
-# analyzer.lsm_extrapolation(365)
-# analyzer.model(365, True, True)
-analyzer.detected_anomalies_LSM()
+
+analyzer = ca.CryptoAnalyzer(sample, currency)
+analyzer.remove_anomalies('sliding-window', 2)
+analyzer.approximate(9)
+
+# analyzer.remove_anomalies('medium', 3)
+# analyzer.approximate(9)
+
+analyzer.filter('alpha-beta', 50)
+analyzer.approximate(9)
+
+analyzer.extrapolate()
+
+analyzer.model(365, True, True, True)
+
+analyzer.remove_anomalies('sliding-window', 2)
+analyzer.approximate(9)
+
+analyzer.filter('alpha-beta', 50)
+analyzer.approximate(9)

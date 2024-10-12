@@ -27,6 +27,6 @@ def coin_parsing(currency, days=365):
         print('Coin parsing successful')
         return coin_year_prices_df
     else:
-        print('Test request failed, status code ' + str(test_response.status_code))
+        print('Test request failed, status src ' + str(test_response.status_code))
         print(test_response.text)
         return None
