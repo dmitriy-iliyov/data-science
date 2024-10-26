@@ -1,6 +1,6 @@
-
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
 
 pd.set_option('display.max_rows', None)
@@ -40,8 +40,7 @@ def matrix_adapter(line_column_matrix, line):
 def Voronin(file_name, g_list, max_index_list):
     line_column_matrix = matrix_generation(file_name)
     column_matrix = np.shape(line_column_matrix)
-    print(column_matrix)
-    Integro = np.zeros((column_matrix[1]))
+    integro = np.zeros((column_matrix[1]))
 
     f_list = [matrix_adapter(line_column_matrix, i) for i in range(len(line_column_matrix))]
 
@@ -70,19 +69,50 @@ def Voronin(file_name, g_list, max_index_list):
 
     for i in range(column_matrix[1]):
         for gi, fi in zip(g_norm_list, f_norm_list):
-            Integro[i] = Integro[i] + (gi * (1 - fi[i]) ** (-1))
-    print(f_norm_list)
+            integro[i] = integro[i] + (gi * (1 - fi[i]) ** (-1))
 
     min_ = 10000
     opt = 0
     for i in range(column_matrix[1]):
-        if min_ > Integro[i]:
-            min_ = Integro[i]
+        if min_ > integro[i]:
+            min_ = integro[i]
             opt = i
     print('Інтегрована оцінка (scor):')
-    print(Integro)
+    print(integro)
     print('Номер оптимального обчислювального комплексу:', opt + 1)
+    olap(f_norm_list, column_matrix[1], integro)
     return
+
+
+def olap(f_norm_list, items_count, integro):
+    ind = np.ones(items_count)
+    for i in range(len(f_norm_list[0])):
+        ind[i] = i
+    criteria_len = len(f_norm_list) + 1
+    fig = plt.figure(figsize=(10, 7))
+    ax = fig.add_subplot(111, projection='3d')
+
+    clr = ['#4bb2c5', '#c5b47f', '#EAA228', '#579575', '#839557',
+           '#958c12', '#953579', '#4b5de4', '#4bb2c5', '#219754']
+
+    width = 0.5 * items_count/len(f_norm_list)
+    depth = 0.55
+
+    for i, fi in enumerate(f_norm_list):
+        ax.bar3d(ind, np.full(items_count, i), np.zeros(items_count),
+                 width, depth, fi, color=clr[i % len(clr)], alpha=1)
+
+    ax.bar3d(ind, np.full(items_count, criteria_len - 1), np.zeros(items_count),
+             width, depth, integro, color='#FF5733', alpha=1)
+
+    ax.set_xlim(0, items_count)
+    ax.set_ylim(0, criteria_len)
+    ax.set_zlim(0, max(max(integro), max([max(fi) for fi in f_norm_list])) * 1.1)
+    ax.set_xlabel('item')
+    ax.set_ylabel('criteria')
+    ax.set_zlabel('integration score')
+
+    plt.show()
 
 
 Voronin('files/data.csv', [4, 4, 3, 2, 1, 1, 4, 4, 3], [1, 2, 3])
