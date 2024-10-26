@@ -1,9 +1,7 @@
 from abc import ABC
 
-import numpy as np
-
+from tools import stat_characteristics as sc, lsm_package as lp
 from tools.cleaners.cleaner import Cleaner
-from tools import stat_characteristics as sc, lsm_package as lp, ploter
 
 
 class LsmCleaner(Cleaner, ABC):

@@ -1,7 +1,5 @@
 from abc import ABC
 
-import numpy as np
-
 from tools.filters.filter import Filter
 from tools import stat_characteristics as sc, ploter
 
