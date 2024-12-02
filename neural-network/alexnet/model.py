@@ -4,7 +4,7 @@ from keras.src.layers import Conv2D, Flatten, Dense, MaxPooling2D, ZeroPadding2D
 from keras.src.optimizers import Adam
 from keras.src.saving.saving_lib import load_model
 from matplotlib import pyplot as plt
-from lab_5.img_analyzer import get_img
+from inception_v3.img_analyzer import get_img
 
 
 class AlexNet:
@@ -37,7 +37,7 @@ class AlexNet:
                            loss='categorical_crossentropy',
                            metrics=['accuracy'])
 
-    def load(self, path='/Users/sayner/github_repos/neural-network/alexnet/learned_model/lab_4_model.keras'):
+    def load(self, path='/Users/sayner/github_repos/data-science/neural-network/alexnet/learned_model/lab_4_model.keras'):
         self.model = load_model(path)
 
     def print_model(self):
