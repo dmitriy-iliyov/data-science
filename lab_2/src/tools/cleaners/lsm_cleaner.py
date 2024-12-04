@@ -1,7 +1,7 @@
 from abc import ABC
 
-from tools import stat_characteristics as sc, lsm_package as lp
-from tools.cleaners.cleaner import Cleaner
+from src.tools import stat_characteristics as sc, lsm_package as lp
+from src.tools.cleaners.cleaner import Cleaner
 
 
 class LsmCleaner(Cleaner, ABC):

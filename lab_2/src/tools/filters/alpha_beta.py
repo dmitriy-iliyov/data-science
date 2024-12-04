@@ -1,7 +1,7 @@
 from abc import ABC
 
-from tools.filters.filter import Filter
-from tools import stat_characteristics as sc, ploter
+from src.tools.filters.filter import Filter
+from src.tools import stat_characteristics as sc, ploter
 
 
 class AlphaBeta(Filter, ABC):
@@ -11,7 +11,6 @@ class AlphaBeta(Filter, ABC):
 
     def filter(self, sample, k_max):
         self._sample = sample
-        print(len(self._sample))
         t = 1
         v_previous = (sample[1] - sample[0]) / t
         x_predicted = sample[0] + v_previous
@@ -19,7 +18,6 @@ class AlphaBeta(Filter, ABC):
         beta = 6 / 1 * (1 + 1)
         self._filtered_sample.append((sample[0] + alpha * (sample[0] - x_predicted)))
         for k in range(1, len(self._sample)):
-            print(k)
             x = x_predicted + alpha * (sample[k] - x_predicted)
             self._filtered_sample.append(x)
             x_previous = x

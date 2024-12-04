@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+color_names = ['red', 'blue', 'green', 'orange', 'purple', 'brown', 'pink', 'gray', 'cyan', 'magenta']
+
 
 def one_plot(data, label):
     data = np.array(data)
@@ -57,6 +59,16 @@ def three_plots(data_set, labels):
         plt.show()
     else:
         print('No data found')
+
+
+def dots(data_set):
+    for data in data_set:
+        color = color_names[data_set.index(data)]
+        for i in data:
+            plt.scatter(i[0], i[1], color=color, marker='o', s=3)
+            plt.xlabel('X')
+            plt.ylabel('Y')
+    plt.show()
 
 
 def hist(data):

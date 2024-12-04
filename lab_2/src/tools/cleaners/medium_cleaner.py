@@ -1,8 +1,8 @@
 from abc import ABC
 
 import numpy as np
-from tools.cleaners.cleaner import Cleaner
-from tools import stat_characteristics as sc, ploter
+from src.tools.cleaners.cleaner import Cleaner
+from src.tools import stat_characteristics as sc, ploter
 
 
 class MediumCleaner(Cleaner, ABC):

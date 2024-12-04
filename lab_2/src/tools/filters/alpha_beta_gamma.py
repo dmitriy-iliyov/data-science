@@ -1,7 +1,7 @@
 from abc import ABC
 
-from tools.filters.filter import Filter
-from tools import stat_characteristics as sc, ploter
+from src.tools.filters.filter import  Filter
+from src.tools import stat_characteristics as sc, ploter
 
 
 class AlphaBetaGamma(Filter, ABC):
