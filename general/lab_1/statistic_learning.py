@@ -1,8 +1,8 @@
 import numpy as np
 import math
 
-import ploter
-import distributions as d
+from lab_1 import ploter
+from lab_1 import distributions as d
 
 
 class CryptoAnalyzer:

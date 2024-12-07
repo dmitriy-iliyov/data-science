@@ -1,7 +1,7 @@
 import numpy as np
 import math
 
-import ploter
+from lab_1 import ploter
 
 
 def uniform_distribution(a, b, n, nAV):
