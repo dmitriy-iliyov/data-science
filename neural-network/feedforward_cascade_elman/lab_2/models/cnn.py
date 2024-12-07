@@ -4,8 +4,8 @@ import tensorflow as tf
 import numpy as np
 from tensorflow.python.trackable.base import Trackable
 
-from feedforward_cascade_elman.lab_2.models.network import Network
-import feedforward_cascade_elman.lab_2.tools.filer as filer
+from network import Network
+import tools.files as filer
 
 
 class CNN(Network, Trackable):
@@ -65,7 +65,7 @@ class CNN(Network, Trackable):
         start_time = time.time()
 
         self.deviation = max(train_answers)/100
-        optimizer = tf.optimizers.SGD(learning_rate)
+        optimizer = tf.optimizers.Adam(learning_rate)
         mse_list = []
         accuracy_list = []
 
