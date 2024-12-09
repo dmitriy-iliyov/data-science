@@ -30,7 +30,7 @@ def two_plot(ax, x1, y1, label1, color1, x2, y2, label2, color2, title, x_label,
     mplcursors.cursor(ax).connect("add", lambda sel: sel.annotation.set_text(f"{sel.target[1]:.4f}"))
 
 
-def one_fit_statistic(fit_data, test_data):
+def one_fit_statistic(fit_data, test_data=None):
     fig = plt.figure(figsize=(14, 10))
     # fig = plt.figure(figsize=(12, 5))
     gs = fig.add_gridspec(2, 2, width_ratios=[1, 1], height_ratios=[1, 1], wspace=0.2, hspace=0.2)
@@ -54,29 +54,30 @@ def one_fit_statistic(fit_data, test_data):
     ax2.text(0.975, 0.05, mse_info, fontsize=11, verticalalignment='bottom', horizontalalignment='right',
              transform=ax2.transAxes, bbox=dict(facecolor='white', alpha=0.5))
 
-    ax3 = fig.add_subplot(gs[1, 0])
-    sorted_test_predicts_1 = sorted(test_data['test_predicts_1'], reverse=True)
-    sorted_answers_1 = sorted(test_data['test_answers_1'], reverse=True)
-    e_count_1 = [i for i in range(len(test_data['test_answers_1']))]
-    two_plot(ax3, e_count_1, sorted_test_predicts_1, 'Predicts', 'red',
-             e_count_1, sorted_answers_1, 'Answers', 'green',
-             'Test on fit range', 'Examples Count', 'Answers')
-    test_1_info = (f'MSE: {test_data['mse_1']:.4f}\n'
-                   f'Test Accuracy: {test_data['score_1']}')
-    ax3.text(0.975, 0.05, test_1_info, fontsize=11, verticalalignment='bottom', horizontalalignment='right',
-             transform=ax3.transAxes, bbox=dict(facecolor='white', alpha=0.5))
+    if fit_data:
+        ax3 = fig.add_subplot(gs[1, 0])
+        sorted_test_predicts_1 = sorted(test_data['test_predicts_1'], reverse=True)
+        sorted_answers_1 = sorted(test_data['test_answers_1'], reverse=True)
+        e_count_1 = [i for i in range(len(test_data['test_answers_1']))]
+        two_plot(ax3, e_count_1, sorted_test_predicts_1, 'Predicts', 'red',
+                 e_count_1, sorted_answers_1, 'Answers', 'green',
+                 'Test on fit range', 'Examples Count', 'Answers')
+        test_1_info = (f'MSE: {test_data['mse_1']:.4f}\n'
+                       f'Test Accuracy: {test_data['score_1']}')
+        ax3.text(0.975, 0.05, test_1_info, fontsize=11, verticalalignment='bottom', horizontalalignment='right',
+                 transform=ax3.transAxes, bbox=dict(facecolor='white', alpha=0.5))
 
-    ax4 = fig.add_subplot(gs[1, 1])
-    sorted_test_predicts_2 = sorted(test_data['test_predicts_2'], reverse=True)
-    sorted_answers_2 = sorted(test_data['test_answers_2'], reverse=True)
-    e_count_2 = [i for i in range(len(test_data['test_answers_2']))]
-    two_plot(ax4, e_count_2, sorted_test_predicts_2, 'Predicts', 'red',
-             e_count_2, sorted_answers_2, 'Answers', 'green',
-             'Test on new range', 'Examples Count', 'Answers')
-    test_2_info = (f'MSE: {test_data['mse_2']:.4f}\n'
-                   f'Test Accuracy: {test_data['score_2']}')
-    ax4.text(0.975, 0.05, test_2_info, fontsize=11, verticalalignment='bottom', horizontalalignment='right',
-             transform=ax4.transAxes, bbox=dict(facecolor='white', alpha=0.5))
+        ax4 = fig.add_subplot(gs[1, 1])
+        sorted_test_predicts_2 = sorted(test_data['test_predicts_2'], reverse=True)
+        sorted_answers_2 = sorted(test_data['test_answers_2'], reverse=True)
+        e_count_2 = [i for i in range(len(test_data['test_answers_2']))]
+        two_plot(ax4, e_count_2, sorted_test_predicts_2, 'Predicts', 'red',
+                 e_count_2, sorted_answers_2, 'Answers', 'green',
+                 'Test on new range', 'Examples Count', 'Answers')
+        test_2_info = (f'MSE: {test_data['mse_2']:.4f}\n'
+                       f'Test Accuracy: {test_data['score_2']}')
+        ax4.text(0.975, 0.05, test_2_info, fontsize=11, verticalalignment='bottom', horizontalalignment='right',
+                 transform=ax4.transAxes, bbox=dict(facecolor='white', alpha=0.5))
 
     plt.show()
 
