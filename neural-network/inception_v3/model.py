@@ -2,6 +2,7 @@ import time
 
 from keras import Model
 from keras.src.applications.inception_v3 import InceptionV3
+from keras.src.callbacks import EarlyStopping
 from keras.src.layers import GlobalAveragePooling2D, Dense
 from keras.src.optimizers import Adam
 from matplotlib import pyplot as plt
@@ -29,7 +30,12 @@ class CustomInceptionV3:
 
     def fit(self, train_dataset, val_dataset, epochs=90):
         start = time.time()
-        history = self.model.fit(train_dataset, validation_data=val_dataset, epochs=epochs)
+        early_stopping = EarlyStopping(
+            monitor='val_loss',
+            patience=5,
+            restore_best_weights=True
+        )
+        history = self.model.fit(train_dataset, validation_data=val_dataset, epochs=epochs, callbacks=[early_stopping])
         execution_time = time.time() - start
         self.model.save(self.store_path + '/model.keras')
         self.plot_history(history, epochs, execution_time)

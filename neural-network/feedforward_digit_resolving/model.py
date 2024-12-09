@@ -1,6 +1,7 @@
 import time
 
 import numpy as np
+from keras.src.callbacks import EarlyStopping
 from tensorflow import keras
 from tensorflow.keras.layers import Dense, Flatten
 
@@ -20,10 +21,20 @@ class Model:
                            loss='categorical_crossentropy',
                            metrics=['accuracy'])
 
-    def fit(self, train_data, train_labels, epochs, batch_size=32):
+    def fit(self, train_data, train_labels, epochs=5, batch_size=32):
         train_labels = keras.utils.to_categorical(train_labels, 10)
         start = time.time()
-        history = self.model.fit(train_data, train_labels, batch_size, epochs=5, validation_split=0.2)
+        early_stopping = EarlyStopping(
+            monitor='val_loss',
+            patience=5,
+            restore_best_weights=True
+        )
+        history = self.model.fit(train_data,
+                                 train_labels,
+                                 batch_size,
+                                 epochs=epochs,
+                                 validation_split=0.2,
+                                 callbacks=[early_stopping])
         execution_time = time.time() - start
         plotter.print_plot_lab_3({'epochs': epochs,
                                   'accuracy': history.history['accuracy'],

@@ -1,6 +1,7 @@
 import time
 
 import tensorflow as tf
+from keras.src.callbacks import EarlyStopping
 from tensorflow import keras
 
 
@@ -19,7 +20,15 @@ class KerasFNN:
 
     def fit(self, train_data, train_labels, epochs=100):
         start_time = time.time()
-        history = self._fnn.fit(train_data, train_labels, epochs=epochs)
+        early_stopping = EarlyStopping(
+            monitor='val_loss',
+            patience=5,
+            restore_best_weights=True
+        )
+        history = self._fnn.fit(train_data, train_labels,
+                                validation_split=0.2,
+                                epochs=epochs,
+                                callbacks=[early_stopping])
         execution_time = time.time() - start_time
 
         accuracy_list = history.history['accuracy']

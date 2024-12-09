@@ -1,5 +1,6 @@
 import time
 from keras import Sequential, Input
+from keras.src.callbacks import EarlyStopping
 from keras.src.layers import Conv2D, Flatten, Dense, MaxPooling2D, ZeroPadding2D, Dropout
 from keras.src.optimizers import Adam
 from keras.src.saving.saving_lib import load_model
@@ -45,7 +46,16 @@ class AlexNet:
 
     def fit(self, train_dataset, val_dataset, save=False, epochs=20):
         start = time.time()
-        history = self.model.fit(train_dataset, validation_data=val_dataset, epochs=epochs)
+        early_stopping = EarlyStopping(
+            monitor='val_loss',
+            patience=5,
+            restore_best_weights=True
+        )
+        history = self.model.fit(train_dataset,
+                                 validation_data=val_dataset,
+                                 validation_split=0.2,
+                                 epochs=epochs,
+                                 callbacks=[early_stopping])
         execution_time = time.time() - start
         if save:
             self.model.save(self.store_path + '/lab_4_model.keras')
