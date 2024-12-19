@@ -59,7 +59,7 @@ class AlexNet:
         execution_time = time.time() - start
         if save:
             self.model.save(self.store_path + '/lab_4_model.keras')
-        self.plot_history(history, epochs, execution_time)
+        self.plot_history(history, execution_time)
 
     def evaluate(self, test_dataset):
         loss, accuracy = self.model.evaluate(test_dataset)
@@ -71,7 +71,8 @@ class AlexNet:
         return probability_vec
 
     @staticmethod
-    def plot_history(history, epochs, execution_time):
+    def plot_history(history, execution_time):
+        epochs = len(history.history['accuracy'])
         plt.figure(figsize=(12, 4))
 
         plt.subplot(1, 2, 1)
