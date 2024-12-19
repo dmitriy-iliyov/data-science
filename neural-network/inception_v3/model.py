@@ -38,14 +38,15 @@ class CustomInceptionV3:
         history = self.model.fit(train_dataset, validation_data=val_dataset, epochs=epochs, callbacks=[early_stopping])
         execution_time = time.time() - start
         self.model.save(self.store_path + '/model.keras')
-        self.plot_history(history, epochs, execution_time)
+        self.plot_history(history, execution_time)
 
     def evaluate(self, test_dataset):
         test_loss, test_accuracy = self.model.evaluate(test_dataset)
         print(f"Test accuracy: {test_accuracy:.3f}")
 
     @staticmethod
-    def plot_history(history, epochs, execution_time):
+    def plot_history(history, execution_time):
+        epochs = len(history.history['accuracy'])
         plt.figure(figsize=(12, 4))
 
         plt.subplot(1, 2, 1)
