@@ -47,4 +47,4 @@ def coin_parsing(currency, days=90, interval='hourly'):
     else:
         print('Test request failed, status code ' + str(test_response.status_code))
         print(test_response.text)
-        return None
+        return False
