@@ -1,8 +1,8 @@
 from abc import ABC
 
 import numpy as np
-from tools.cleaners.cleaner import Cleaner
-from tools import stat_characteristics as sc, ploter
+from lab_2.src.tools.cleaners.cleaner import Cleaner
+from lab_2.src.tools import stat_characteristics as sc, ploter
 
 
 class SlidingWindowCleaner(Cleaner, ABC):
@@ -40,4 +40,4 @@ class SlidingWindowCleaner(Cleaner, ABC):
     def info(self):
         print('\033[94mCleaned with sliding window stat characteristics:\033[0m')
         sc.stat_characteristics(self._cleaned_sample, print_flag=True)
-        ploter.two_plots(self._sample, 'sample', self._cleaned_sample, 'cleaned-sample')
+        ploter.two_plots(self._sample, 'sample', self._cleaned_sample, 'sliding-window-cleaned-sample')

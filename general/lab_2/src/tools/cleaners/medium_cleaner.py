@@ -1,8 +1,7 @@
 from abc import ABC
 
-import numpy as np
-from tools.cleaners.cleaner import Cleaner
-from tools import stat_characteristics as sc, ploter
+from lab_2.src.tools.cleaners.cleaner import Cleaner
+from lab_2.src.tools import stat_characteristics as sc, ploter
 
 
 class MediumCleaner(Cleaner, ABC):
@@ -17,7 +16,6 @@ class MediumCleaner(Cleaner, ABC):
         wind_size = int(percent * sample_len / 100)
         _, _, standard_sd = sc.stat_characteristics(sample[:wind_size])
         self._cleaned_sample[:wind_size] = sample[:wind_size]
-        print(sample[:wind_size])
         for i in range(1, sample_len):
             window_sample = sample[i:i + wind_size]
             E, _, sd = sc.stat_characteristics(window_sample)

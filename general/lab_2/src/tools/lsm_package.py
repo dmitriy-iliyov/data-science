@@ -12,9 +12,12 @@ def lsm_approximation(sample, d, leftovers_flag=False):
     return _a_sample, _c
 
 
-def lsm_extrapolation(sample_len, c, extrapolation_length):
+def lsm_extrapolation(sample, c, extrapolation_length):
+    sample_len = len(sample)
     _e_sample = np.zeros((sample_len + extrapolation_length, 1))
-    for i in range(len(_e_sample)):
+    for i in range(sample_len):
+        _e_sample[i, 0] = sample[i]
+    for i in range(sample_len, len(_e_sample)):
         _e_sample[i, 0] = sum(c * (i ** a) for a, c in enumerate(c))
     return _e_sample
 

@@ -1,9 +1,9 @@
 import numpy as np
 import math
 
-from tools import ploter, distributions, lsm_package as lp
-from tools.cleaners import lsm_cleaner, medium_cleaner, sliding_window_cleaner
-from tools.filters import alpha_beta, alpha_beta_gamma
+from lab_2.src.tools import ploter, distributions, lsm_package as lp
+from lab_2.src.tools.cleaners import lsm_cleaner, medium_cleaner, sliding_window_cleaner
+from lab_2.src.tools.filters import alpha_beta, alpha_beta_gamma
 
 
 class CryptoAnalyzer:
@@ -33,7 +33,7 @@ class CryptoAnalyzer:
         ploter.clean()
         ploter.one_plot(sample, currency)
 
-    def remove_anomalies(self, method, percent, q=None):
+    def clean(self, method, percent, q=None):
         cleaner = self._cleaners_map[method]
         self._cleaned_sample = cleaner.clean(self._input_sample, percent=percent)
         cleaner.info()
@@ -41,9 +41,10 @@ class CryptoAnalyzer:
 
     def filter(self, method, k_max=np.inf):
         _filter = self._filters_map[method]
-        self._cleaned_sample = _filter.filter(self._input_sample, k_max)
+        self._filtered_sample = _filter.filter(self._approximated_sample, k_max)
         _filter.info()
-        return self._cleaned_sample
+        self._approximated_sample = self._filtered_sample
+        return self._filtered_sample
 
     def approximate(self, d):
         self._d = self._optimize_polynomial(d)
@@ -75,10 +76,11 @@ class CryptoAnalyzer:
     def extrapolate(self, extrapolation_len=None):
         if extrapolation_len is None:
             extrapolation_len = int(self._sample_len/2)
-        self._extrapolated_sample = lp.lsm_extrapolation(self._sample_len, self._c, extrapolation_len)
+        self._extrapolated_sample = lp.lsm_extrapolation(self._approximated_sample, self._c, extrapolation_len)
         print('\033[94mExtrapolation sample stat characteristics:\033[0m')
         self.stat_characteristics(self._extrapolated_sample)
         ploter.two_plots(self._input_sample, 'sample', self._extrapolated_sample, 'extrapolation-data')
+        return self._input_sample, self._extrapolated_sample
 
     def model(self, synthetic_sample_len, noise=False, anomalies=False, save=False):
         _synthetic_a_sample = np.zeros(synthetic_sample_len)
