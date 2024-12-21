@@ -41,9 +41,9 @@ class CryptoAnalyzer:
 
     def filter(self, method, k_max=np.inf):
         _filter = self._filters_map[method]
-        self._filtered_sample = _filter.filter(self._approximated_sample, k_max)
+        self._filtered_sample = _filter.filter(self._cleaned_sample, k_max)
         _filter.info()
-        self._approximated_sample = self._filtered_sample
+        self._cleaned_sample = self._filtered_sample
         return self._filtered_sample
 
     def approximate(self, d):
