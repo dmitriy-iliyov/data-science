@@ -2,6 +2,7 @@
 import time
 
 from keras.src.callbacks import EarlyStopping
+from keras.src.saving import load_model
 from tensorflow.keras import Sequential
 from tensorflow.keras.layers import Dense, Input, LSTM
 from matplotlib import pyplot as plt
@@ -10,6 +11,9 @@ from matplotlib import pyplot as plt
 class KerasLSTM:
 
     def __init__(self):
+        self._model = None
+
+    def init(self):
         self._model = Sequential([
             Input(shape=(24, 1)),
             LSTM(128, activation='tanh', return_sequences=True),
@@ -25,7 +29,7 @@ class KerasLSTM:
         start_time = time.time()
         early_stopping = EarlyStopping(
             monitor='val_loss',
-            patience=5,
+            patience=1,
             restore_best_weights=True
         )
         history = self._model.fit(
@@ -44,6 +48,9 @@ class KerasLSTM:
     def evaluate(self, test_data, test_answers):
         test_loss, test_mae = self._model.evaluate(test_data, test_answers, verbose=1)
         return test_loss, test_mae
+
+    def load_model(self, path='/Users/sayner/github_repos/data-science/general/lab_6/data_files/models/lstm_bitcoin_model.keras'):
+        self._model = load_model(path)
 
     def predict(self, sequence):
         return self._model.predict(sequence)

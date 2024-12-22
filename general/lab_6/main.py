@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 
 from lab_1 import parser
@@ -41,15 +42,22 @@ def prepare_data(currency):
 train_data, train_answers, test_data, test_answers = prepare_data("bitcoin")
 
 lstm = KerasLSTM()
-lstm.summary()
-lstm.fit(train_data, train_answers)
-lstm.evaluate(test_data, test_answers)
+lstm.load_model()
 
-last_48_hour = parser.coin_parsing('bitcoin', 2)
-sequence = last_48_hour['price'][:24]
-sequence_scaled = scaler.transform(np.array(sequence).reshape(-1, 1)).reshape(1, 24, 1)
+last_48_hour = pd.read_csv("/Users/sayner/github_repos/data-science/general/lab_1/files/bitcoin_hourly.csv")
+sequence = last_48_hour['price'][:48]
+print("Hours: " + str(len(sequence)))
 
-prediction = lstm.predict(sequence_scaled)
-predicted_price = scaler.inverse_transform(prediction)
-print(f"Predicted price: {predicted_price[0][0]}")
-print(f"Actual price: {last_48_hour['price'][24]}")
+if len(sequence) < 24:
+    print("Недостатньо даних для прогнозування.")
+else:
+    for i in range(len(sequence) - 24):
+        sequence_segment = sequence[i:i + 24]
+        sequence_scaled = scaler.transform(np.array(sequence_segment).reshape(-1, 1)).reshape(1, 24, 1)
+
+        prediction = scaler.inverse_transform(lstm.predict(sequence_scaled))
+
+        actual_price = sequence[i + 24]
+        print(f"Predicted price: {prediction[0][0]}")
+        print(f"Actual price: {actual_price}")
+
