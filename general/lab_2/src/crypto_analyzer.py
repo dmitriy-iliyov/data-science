@@ -1,9 +1,9 @@
 import numpy as np
 import math
 
-from src.tools import ploter, distributions, lsm_package as lp
-from src.tools.cleaners import lsm_cleaner, medium_cleaner, sliding_window_cleaner
-from src.tools.filters import alpha_beta, alpha_beta_gamma
+from lab_2.src.tools import ploter, distributions, lsm_package as lp
+from lab_2.src.tools.cleaners import lsm_cleaner, medium_cleaner, sliding_window_cleaner
+from lab_2.src.tools.filters import alpha_beta, alpha_beta_gamma
 
 
 class CryptoAnalyzer:

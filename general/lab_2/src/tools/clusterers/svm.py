@@ -1,4 +1,4 @@
-from src.tools.clusterers.clusterer import Clusterer
+from lab_2.src.tools.clusterers.clusterer import Clusterer
 
 
 class SVM(Clusterer):

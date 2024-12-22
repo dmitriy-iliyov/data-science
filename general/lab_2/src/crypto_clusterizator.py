@@ -5,9 +5,6 @@ import pandas as pd
 from sklearn.cluster import KMeans
 
 
-from src.tools import parser
-
-
 class CryptoClusterizator:
 
     def __init__(self, n_cluster, coin_names=None):

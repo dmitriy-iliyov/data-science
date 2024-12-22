@@ -1,6 +1,6 @@
 import random
-from src.tools.clusterers.k_means import KMeans
-from src.tools.clusterers.k_nearest_neighbors import KNearestNeighbors
+from lab_2.src.tools.clusterers.k_means import KMeans
+from lab_2.src.tools.clusterers.k_nearest_neighbors import KNearestNeighbors
 
 
 def rand_coordinates(n, _min=-10, _max=10):

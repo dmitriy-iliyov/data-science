@@ -1,8 +1,8 @@
 import math
 import random
 
-from src.tools.clusterers.clusterer import Clusterer
-from src.tools import ploter
+from lab_2.src.tools.clusterers.clusterer import Clusterer
+from lab_2.src.tools import ploter
 
 
 class KMeans(Clusterer):
